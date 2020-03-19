@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="LocalDatabase.Mobile.Views.DisplayImagePage"
+             xmlns:conv="clr-namespace:LocalDatabase.Mobile.Converters;assembly=LocalDatabase.Mobile"
+             xmlns:mycc="clr-namespace:LocalDatabase.Mobile.CustomControls;assembly=LocalDatabase.Mobile"
+             Title="Details">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <conv:ImageConverter x:Key="ImageToSourceConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Cancel" Clicked="Cancel_Clicked" />
+    </ContentPage.ToolbarItems>
+
+    <mycc:CustomScrollView HorizontalOptions="FillAndExpand" 
+                               VerticalOptions="FillAndExpand"
+                               Orientation="Both">
+        <Image Source="{Binding Photo, Converter={StaticResource ImageToSourceConverter}}"
+                    Aspect="AspectFit"/>
+    </mycc:CustomScrollView>
+</ContentPage>

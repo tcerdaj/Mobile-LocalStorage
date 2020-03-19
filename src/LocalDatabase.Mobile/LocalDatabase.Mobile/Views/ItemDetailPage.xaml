@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:ico="clr-namespace:LocalDatabase.Mobile.FontAwesome;assembly=LocalDatabase.Mobile"
+             x:Class="LocalDatabase.Mobile.Views.ItemDetailPage"
+             xmlns:conv="clr-namespace:LocalDatabase.Mobile.Converters;assembly=LocalDatabase.Mobile"
+             xmlns:System="clr-namespace:System;assembly=netstandard"
+             xmlns:mr="clr-namespace:MR.Gestures;assembly=MR.Gestures"
+             Title="{Binding Title}"
+             x:Name="ItemDetailsPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <conv:EmptyListConverter x:Key="EmptyListToBool"/>
+            <conv:ImageConverter x:Key="ImageToSourceConverter"/>
+            <conv:IconConverter x:Key="IconConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Save" Clicked="SaveItem_Clicked" />
+    </ContentPage.ToolbarItems>
+
+    <StackLayout Spacing="10" Padding="15" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+        <Grid HorizontalOptions="FillAndExpand">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackLayout Grid.Column="0" Grid.Row="0" Orientation="Vertical" >
+                <mr:Image  
+                    HeightRequest="100" 
+                    Source="{Binding Contact.Photo, Converter={StaticResource ImageToSourceConverter}}" 
+                    Aspect="AspectFit"
+                    TappedCommand="{Binding BindingContext.DisplayImageCommand, Source={x:Reference ItemDetailsPage}}"
+                    TappedCommandParameter="{Binding Contact}"/>
+                <Button Text="Take Photo" Command="{Binding TakePhotoCommand}"/>
+            </StackLayout>
+            <StackLayout Grid.Column="1" Grid.Row="0" Orientation="Vertical">
+                <Label Text="Name:" FontSize="14" Font="Bold"/>
+                <Label Text="{Binding Contact.Name}" d:Text="Item name" FontSize="Small"/>
+                <Label Text="Address:" FontSize="14" Font="Bold"/>
+                <Label Text="{Binding Contact.Address}" d:Text="Item description" FontSize="Small"/>
+                <Label Text="Phone:" FontSize="14" Font="Bold" />
+                <Label Text="{Binding Contact.Phone}" d:Text="Item description" FontSize="Small"/>
+            </StackLayout>
+            <StackLayout Grid.ColumnSpan="2" Grid.Row="1" HorizontalOptions="FillAndExpand"
+                         VerticalOptions="Fill">
+                <StackLayout Padding="5" Orientation="Horizontal" BackgroundColor="LightGray">
+                    <Label VerticalTextAlignment="Center" Text="Transactions" FontSize="14" Font="Bold"  HeightRequest="30" HorizontalOptions="FillAndExpand"/>
+                    <Button Text="Chart" HorizontalOptions="End" BorderColor="Transparent" Command="{Binding ViewChartCommand}"/>
+                    <Button Text="Add" HorizontalOptions="End" BorderColor="Transparent" Clicked="Button_OnClicked"/>
+                </StackLayout>
+                <StackLayout Padding="5" Orientation="Vertical" >
+                    <Label Text="{Binding Income, StringFormat=Income: '{0:C}'}" LineBreakMode="NoWrap" Style="{DynamicResource ListItemDetailTextStyle}" FontSize="13" />
+                    <Label Text="{Binding Expenses, StringFormat=Expenses: '{0:C}'}" LineBreakMode="NoWrap" Style="{DynamicResource ListItemDetailTextStyle}" FontSize="13" />
+                    <Label Text="{Binding Total, StringFormat=Total: '{0:C}'}" LineBreakMode="NoWrap" Style="{DynamicResource ListItemDetailTextStyle}" FontSize="13" />
+                </StackLayout>
+                
+                <ListView ItemsSource="{Binding Transactions}"
+                          IsVisible="{Binding Transactions, Converter={StaticResource EmptyListToBool}, ConverterParameter=invert}"
+                          VerticalOptions="FillAndExpand"
+                          HorizontalOptions="FillAndExpand"
+                          HasUnevenRows="true">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid VerticalOptions="Fill"
+                                      HorizontalOptions="FillAndExpand"
+                                      Padding="10,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="60" />
+                                        <ColumnDefinition Width="25" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="35" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <mr:StackLayout Grid.Column="0"
+                                                    Padding="10"
+                                                    TappedCommand="{Binding BindingContext.DisplayImageCommand, Source={x:Reference ItemDetailsPage}}"
+                                                    TappedCommandParameter="{Binding .}">
+                                         <Image  VerticalOptions="Center" HeightRequest="50" HorizontalOptions="Start" Source="{Binding ., Converter={StaticResource ImageToSourceConverter}}" />
+                                    </mr:StackLayout>
+                                    <Label Grid.Column="1"
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="Center"
+                                            VerticalTextAlignment="Center"
+                                            HorizontalTextAlignment="Center"
+                                            WidthRequest="25"
+                                            HeightRequest="25"
+                                            FontSize="15"
+                                            Text="{Binding Category, Converter={StaticResource IconConverter}}">
+                                        <Label.FontFamily>
+                                            <OnPlatform x:TypeArguments="System:String" 
+                                                        Android="fa-solid-900.ttf#Font Awesome 5 Free Solid"
+                                                        iOS="FontAwesome5FreeSolid"/>
+                                        </Label.FontFamily>
+                                    </Label>
+                                    <StackLayout Grid.Column="2"
+                                                 Padding="0" 
+                                                 HorizontalOptions="FillAndExpand" 
+                                                 VerticalOptions="Center">
+                                        <Label Text="{Binding Description}" 
+                                               LineBreakMode="NoWrap" 
+                                               Style="{DynamicResource ListItemTextStyle}"
+                                               Font="Bold,20"
+                                               FontSize="16" />
+                                        <Label Text="{Binding Amount, StringFormat=Amount: '{0:C}'}" 
+                                               LineBreakMode="NoWrap"
+                                               Style="{DynamicResource ListItemDetailTextStyle}"
+                                               FontSize="13" />
+                                        <Label Text="{Binding Created, StringFormat=Date: '{0:dddd, MMMM dd}'}" 
+                                               LineBreakMode="NoWrap"
+                                               Style="{DynamicResource ListItemDetailTextStyle}"
+                                               FontSize="13" />
+                                    </StackLayout>
+                                    <Button Grid.Column="3"
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="End"
+                                            BackgroundColor="Transparent"
+                                            FontSize="15"
+                                            Command="{Binding BindingContext.DeleteCommand, Source={x:Reference ItemDetailsPage}}"
+                                            CommandParameter="{Binding .}"
+                                            Text="{x:Static ico:FontAwesomeIcons.Trash}">
+                                        <Button.FontFamily>
+                                            <OnPlatform x:TypeArguments="System:String" 
+                                                        Android="fa-solid-900.ttf#Font Awesome 5 Free Solid"
+                                                        iOS="FontAwesome5FreeSolid"/>
+                                        </Button.FontFamily>
+                                    </Button>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+            
+        </Grid>
+        <!--Busy indicator-->
+        <AbsoluteLayout VerticalOptions="FillAndExpand"
+                        HorizontalOptions="FillAndExpand"
+                        BackgroundColor="White"
+                        Opacity="0.5"
+                        IsVisible="{Binding IsBusy}">
+            <ActivityIndicator AbsoluteLayout.LayoutBounds="0.5, 0.5, -1, -1"
+                               AbsoluteLayout.LayoutFlags="PositionProportional"
+                               IsRunning="{Binding IsBusy}" />
+        </AbsoluteLayout>
+    </StackLayout>
+</ContentPage>

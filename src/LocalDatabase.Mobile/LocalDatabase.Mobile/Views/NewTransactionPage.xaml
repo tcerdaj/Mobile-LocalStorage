@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:mr="clr-namespace:MR.Gestures;assembly=MR.Gestures"
+             x:Class="LocalDatabase.Mobile.Views.NewTransactionPage"
+             xmlns:conv="clr-namespace:LocalDatabase.Mobile.Converters;assembly=LocalDatabase.Mobile"
+             xmlns:system="clr-namespace:System;assembly=netstandard"
+             Title="{Binding Title}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <conv:ImageConverter x:Key="ImageToSourceConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Cancel" Clicked="Cancel_Clicked" />
+        <ToolbarItem Text="Save" Clicked="Save_Clicked" />
+    </ContentPage.ToolbarItems>
+    
+    <ContentPage.Content>
+        <StackLayout Spacing="10" Padding="15" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+            <Grid HorizontalOptions="FillAndExpand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <StackLayout Grid.Column="0" Grid.Row="0" Orientation="Vertical">
+                    <Image  HeightRequest="100" Source="{Binding Item.Photo, Converter={StaticResource ImageToSourceConverter}}" Aspect="AspectFit"/>
+                    <Button Text="Take Photo" Command="{Binding TakePhotoCommand}"/>
+                </StackLayout>
+
+                <StackLayout Grid.Column="1" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="Fill" Spacing="0" Padding="0" Orientation="Vertical" >
+                    <Label Text="Amount" FontSize="14" />
+                    <Editor x:Name="amountEntry" Text="{Binding Item.Amount}" FontSize="12" Margin="0" />
+                    <mr:StackLayout Orientation="Vertical" 
+                                    VerticalOptions="Fill"
+                                    HorizontalOptions="FillAndExpand"
+                                    Tapped="TransactionType_OnTapped">
+                        <Label Text="Transaction type" FontSize="14" />
+                        <Editor x:Name="transactionTypeEntry" IsReadOnly="True" Text="{Binding Item.TransactionType}" FontSize="12" Margin="0" />
+                    </mr:StackLayout>
+                    <mr:StackLayout Orientation="Vertical" 
+                                    VerticalOptions="Fill"
+                                    HorizontalOptions="FillAndExpand"
+                                    Tapped="Category_OnTapped">
+                        <Label Text="Category" FontSize="14" />
+                        <Editor x:Name="categoryEntry" IsReadOnly="True" Text="{Binding Item.Category}" FontSize="12" Margin="0" />
+                    </mr:StackLayout>
+                </StackLayout>
+                <StackLayout Orientation="Vertical" Grid.Row="1" Grid.ColumnSpan="2">
+                    <mr:StackLayout Orientation="Vertical" 
+                                    VerticalOptions="Fill"
+                                    HorizontalOptions="FillAndExpand"
+                                    Tapped="Vendor_OnTapped">
+                        <Label Text="Vendor" FontSize="14" />
+                        <Editor x:Name="vendorEntry" IsReadOnly="True" Text="{Binding Item.Vendor}" FontSize="12" Margin="0" />
+                    </mr:StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Description" FontSize="14" />
+                        <Label Text="(required)" FontSize="9"/>
+                    </StackLayout>
+                    <Entry Text="{Binding Item.Description}" FontSize="12" />
+                </StackLayout>
+                <mr:StackLayout Grid.Row="2"
+                                Grid.ColumnSpan="2"
+                                Orientation="Vertical" 
+                                VerticalOptions="Fill"
+                                HorizontalOptions="FillAndExpand"
+                                Tapped="TransactionDate_OnTapped">
+                    <Label Text="Transaction Date" FontSize="14" />
+                    <Editor x:Name="transactionDateEntry" 
+                            IsReadOnly="True" 
+                            Text="{Binding Item.Created, StringFormat='{0:MM/dd/yyyy}'}" 
+                            FontSize="12" 
+                            Margin="0" 
+                            HorizontalOptions="FillAndExpand"/>
+                </mr:StackLayout>
+            </Grid>
+            <Picker x:Name="transactionTypePicker"
+                    Title="Transaction Type"
+                    ItemsSource="{Binding TransactionTypes}"
+                    SelectedItem="{Binding Item.TransactionType}"
+                    IsVisible="False"/>
+            <Picker x:Name="categoryPicker"
+                    Title="Category"
+                    ItemsSource="{Binding Categories}"
+                    IsVisible="False"/>
+            <Picker x:Name="vendorPicker"
+                    Title="Vendor"
+                    ItemsSource="{Binding Vendors}"
+                    IsVisible="False"/>
+            <DatePicker x:Name="transactionDatePicker"
+                        IsVisible="False"
+                        VerticalOptions="CenterAndExpand">
+                <DatePicker.Format>m/d/yyyy</DatePicker.Format>
+                <DatePicker.MaximumDate>
+                    <system:DateTime x:FactoryMethod="Parse">
+                        <x:Arguments>
+                            <x:String>Jan 1 2050</x:String>
+                        </x:Arguments>
+                    </system:DateTime>
+                </DatePicker.MaximumDate>
+            </DatePicker>
+
+            <!--Busy indicator-->
+            <AbsoluteLayout AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+                            AbsoluteLayout.LayoutFlags="All"
+                            BackgroundColor="White"
+                            Opacity="0.5"
+                            IsVisible="{Binding IsBusy}">
+                <ActivityIndicator AbsoluteLayout.LayoutBounds="0.5, 0.5, -1, -1"
+                                   AbsoluteLayout.LayoutFlags="PositionProportional"
+                                   IsRunning="{Binding IsBusy}" />
+            </AbsoluteLayout>
+        </StackLayout>
+    </ContentPage.Content>
+    
+</ContentPage>

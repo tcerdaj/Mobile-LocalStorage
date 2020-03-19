@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="LocalDatabase.Mobile.Views.ChartPage"
+             xmlns:conv="clr-namespace:LocalDatabase.Mobile.Converters;assembly=LocalDatabase.Mobile"
+             xmlns:pz="clr-namespace:LocalDatabase.Mobile.CustomControls;assembly=LocalDatabase.Mobile"
+             xmlns:forms="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
+             Title="Charts - Expenses">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <conv:ImageConverter x:Key="ImageToSourceConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Cancel" Clicked="Cancel_Clicked" />
+    </ContentPage.ToolbarItems>
+
+    <pz:PinchToZoomContainer BackgroundColor="#EEEEEE">
+        <pz:PinchToZoomContainer.Content>
+            <StackLayout Padding="10" Spacing="10">
+                <forms:ChartView Chart="{Binding ExpensesByDay}" 
+                         HeightRequest="190" 
+                         BackgroundColor="White"/>
+                <forms:ChartView Chart="{Binding ExpensesByMonth}" 
+                         HeightRequest="190" 
+                         BackgroundColor="White"/>
+                <forms:ChartView Chart="{Binding ExpensesByCategory}" 
+                         HeightRequest="190" 
+                         BackgroundColor="White"/>
+            </StackLayout>
+        </pz:PinchToZoomContainer.Content>
+    </pz:PinchToZoomContainer>
+    
+</ContentPage>

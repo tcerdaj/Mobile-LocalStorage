@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:mr="clr-namespace:MR.Gestures;assembly=MR.Gestures"
+             x:Class="LocalDatabase.Mobile.Views.ItemsPage"
+             xmlns:ico="clr-namespace:LocalDatabase.Mobile.FontAwesome;assembly=LocalDatabase.Mobile"
+             xmlns:system="clr-namespace:System;assembly=netstandard"
+             xmlns:conv="clr-namespace:LocalDatabase.Mobile.Converters;assembly=LocalDatabase.Mobile"
+             Title="{Binding Title}"
+             x:Name="BrowseItemsPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <conv:EmptyListConverter x:Key="EmptyListToBool"/>
+            <conv:ImageConverter x:Key="ImageToSourceConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Clicked="AddItem_Clicked" />
+    </ContentPage.ToolbarItems>
+    <AbsoluteLayout HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand">
+        <StackLayout AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+                     AbsoluteLayout.LayoutFlags="All">
+            <ListView x:Name="ItemsListView"
+                    ItemsSource="{Binding Items}"
+                    IsVisible="{Binding Items, Converter={StaticResource EmptyListToBool}, ConverterParameter=invert}"
+                    VerticalOptions="FillAndExpand"
+                    HorizontalOptions="FillAndExpand"
+                    HasUnevenRows="true"
+                    RefreshCommand="{Binding LoadItemsCommand}"
+                    IsPullToRefreshEnabled="true"
+                    CachingStrategy="RecycleElement"
+                    ItemSelected="OnItemSelected">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal"
+                                         VerticalOptions="Fill"
+                                         HorizontalOptions="FillAndExpand"
+                                         Padding="10,10">
+                                <mr:StackLayout 
+                                                TappedCommand="{Binding BindingContext.DisplayImageCommand, Source={x:Reference BrowseItemsPage}}"
+                                                TappedCommandParameter="{Binding .}">
+                                        <Image  HeightRequest="100"
+                                                WidthRequest="100"
+                                                VerticalOptions="Center" 
+                                                HorizontalOptions="Center" 
+                                                Source="{Binding Photo, Converter={StaticResource ImageToSourceConverter}}"/>
+                                </mr:StackLayout>
+                                <StackLayout Padding="0"
+                                             HorizontalOptions="FillAndExpand" 
+                                             VerticalOptions="Center">
+                                        <Label Text="{Binding Name}" 
+                                            LineBreakMode="NoWrap" 
+                                            Style="{DynamicResource ListItemTextStyle}"
+                                            Font="Bold,20"
+                                            FontSize="16" />
+                                        <Label Text="{Binding Address}" 
+                                            LineBreakMode="NoWrap"
+                                            Style="{DynamicResource ListItemDetailTextStyle}"
+                                            FontSize="13" />
+                                        <Label Text="{Binding Phone}" 
+                                               LineBreakMode="NoWrap"
+                                               Style="{DynamicResource ListItemDetailTextStyle}"
+                                               FontSize="13" />
+                                </StackLayout>
+                                <Button VerticalOptions="Center"
+                                       HorizontalOptions="End"
+                                       WidthRequest="35"
+                                       HeightRequest="35"
+                                       BackgroundColor="Transparent"
+                                       FontSize="15"
+                                       Command="{Binding BindingContext.DeleteCommand, Source={x:Reference BrowseItemsPage}}"
+                                       CommandParameter="{Binding .}"
+                                       Text="{x:Static ico:FontAwesomeIcons.Trash}">
+                                    <Button.FontFamily>
+                                        <OnPlatform x:TypeArguments="system:String" 
+                                                    Android="fa-solid-900.ttf#Font Awesome 5 Free Solid"
+                                                    iOS="FontAwesome5FreeSolid"/>
+                                    </Button.FontFamily>
+                                </Button>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+           
+            <AbsoluteLayout IsVisible="{Binding Items, Converter={StaticResource EmptyListToBool}}"
+                            BackgroundColor="#D8D8D8D8"
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="FillAndExpand">
+                <Label Text="No data found."
+                       TextColor="#929292"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"
+                       AbsoluteLayout.LayoutBounds="0.5,0.5,1,1"
+                       AbsoluteLayout.LayoutFlags="All">
+                    <Label.FontFamily>
+                        <OnPlatform x:TypeArguments="system:String">
+                            <On Platform="iOS">HelveticalNeue-Medium</On>
+                            <On Platform="Android">sans-serif-medium</On>
+                        </OnPlatform>
+                    </Label.FontFamily>
+                </Label>
+            </AbsoluteLayout>
+        </StackLayout>
+        <!--Busy indicator-->
+        <AbsoluteLayout AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+                    AbsoluteLayout.LayoutFlags="All"
+                    BackgroundColor="White"
+                    Opacity="0.5"
+                    IsVisible="{Binding IsBusy}">
+            <ActivityIndicator AbsoluteLayout.LayoutBounds="0.5, 0.5, -1, -1"
+                               AbsoluteLayout.LayoutFlags="PositionProportional"
+                               IsRunning="{Binding IsBusy}" />
+         </AbsoluteLayout>
+    </AbsoluteLayout>
+</ContentPage>
