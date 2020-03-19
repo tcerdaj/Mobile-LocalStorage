@@ -11,7 +11,6 @@ namespace LocalDatabase.Mobile.ViewModels
 {
     public class NewTransactionViewModel : BaseViewModel
     {
-        //test
         private Contact _contact;
 
         public Contact Contact
