@@ -291,6 +291,17 @@ namespace LocalDatabase.Mobile.ViewModels
             }
         }
 
+        public ICommand AddTransactionCommand
+        {
+            get
+            {
+                return new RelayCommand(async() =>
+                {
+                    await Navigation.PushAsync(new NewTransactionPage(new NewTransactionViewModel(Contact)));
+                });
+            }
+        }
+
         public static object GetPropValue(object src, string propName)
         {
             return src.GetType().GetProperty(propName).GetValue(src, null);

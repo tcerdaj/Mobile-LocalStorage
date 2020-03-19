@@ -38,10 +38,5 @@ namespace LocalDatabase.Mobile.Views
             MessagingCenter.Send(this, "SaveItem", viewModel.Contact);
             await Navigation.PopAsync(false);
         }
-
-        private async void Button_OnClicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new NewTransactionPage(new NewTransactionViewModel(viewModel.Contact)));
-        }
     }
 }

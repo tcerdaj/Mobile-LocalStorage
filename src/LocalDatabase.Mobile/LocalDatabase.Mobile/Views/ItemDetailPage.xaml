@@ -40,9 +40,9 @@
                     Aspect="AspectFit"
                     TappedCommand="{Binding BindingContext.DisplayImageCommand, Source={x:Reference ItemDetailsPage}}"
                     TappedCommandParameter="{Binding Contact}"/>
-                <Button Text="Take Photo" Command="{Binding TakePhotoCommand}"/>
+                <mr:Label Text="Take Photo" FontSize="14" Font="Bold" Padding="5" TappedCommand="{Binding TakePhotoCommand}" VerticalOptions="Center" HorizontalOptions="Center" BackgroundColor="LightGray"/>
             </StackLayout>
-            <StackLayout Grid.Column="1" Grid.Row="0" Orientation="Vertical">
+            <StackLayout Grid.Column="1" Grid.Row="0" Orientation="Vertical" Padding="0,0,0,25" Spacing="4">
                 <Label Text="Name:" FontSize="14" Font="Bold"/>
                 <Label Text="{Binding Contact.Name}" d:Text="Item name" FontSize="Small"/>
                 <Label Text="Address:" FontSize="14" Font="Bold"/>
@@ -52,17 +52,17 @@
             </StackLayout>
             <StackLayout Grid.ColumnSpan="2" Grid.Row="1" HorizontalOptions="FillAndExpand"
                          VerticalOptions="Fill">
-                <StackLayout Padding="5" Orientation="Horizontal" BackgroundColor="LightGray">
-                    <Label VerticalTextAlignment="Center" Text="Transactions" FontSize="14" Font="Bold"  HeightRequest="30" HorizontalOptions="FillAndExpand"/>
-                    <Button Text="Chart" HorizontalOptions="End" BorderColor="Transparent" Command="{Binding ViewChartCommand}"/>
-                    <Button Text="Add" HorizontalOptions="End" BorderColor="Transparent" Clicked="Button_OnClicked"/>
+                <StackLayout Padding="10,0,10,0" Orientation="Horizontal" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" Spacing="40" VerticalOptions="Fill">
+                    <Label VerticalTextAlignment="Center" Text="Transactions" FontSize="14" Font="Bold"  HorizontalOptions="FillAndExpand"/>
+                    <mr:Label Text="Chart" FontSize="14" Font="Bold" HorizontalOptions="End"  TappedCommand="{Binding ViewChartCommand}" VerticalOptions="FillAndExpand" Padding="10"/>
+                    <mr:Label Text="Add" FontSize="14" Font="Bold" HorizontalOptions="End"  TappedCommand="{Binding AddTransactionCommand}" VerticalOptions="FillAndExpand" Padding="10"/>
                 </StackLayout>
                 <StackLayout Padding="5" Orientation="Vertical" >
                     <Label Text="{Binding Income, StringFormat=Income: '{0:C}'}" LineBreakMode="NoWrap" Style="{DynamicResource ListItemDetailTextStyle}" FontSize="13" />
                     <Label Text="{Binding Expenses, StringFormat=Expenses: '{0:C}'}" LineBreakMode="NoWrap" Style="{DynamicResource ListItemDetailTextStyle}" FontSize="13" />
                     <Label Text="{Binding Total, StringFormat=Total: '{0:C}'}" LineBreakMode="NoWrap" Style="{DynamicResource ListItemDetailTextStyle}" FontSize="13" />
                 </StackLayout>
-                
+                <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="Fill" HeightRequest="1" Color="Gray"/>
                 <ListView ItemsSource="{Binding Transactions}"
                           IsVisible="{Binding Transactions, Converter={StaticResource EmptyListToBool}, ConverterParameter=invert}"
                           VerticalOptions="FillAndExpand"
@@ -82,10 +82,10 @@
                                     </Grid.ColumnDefinitions>
 
                                     <mr:StackLayout Grid.Column="0"
-                                                    Padding="10"
+                                                    Padding="10,10,0,10"
                                                     TappedCommand="{Binding BindingContext.DisplayImageCommand, Source={x:Reference ItemDetailsPage}}"
                                                     TappedCommandParameter="{Binding .}">
-                                         <Image  VerticalOptions="Center" HeightRequest="50" HorizontalOptions="Start" Source="{Binding ., Converter={StaticResource ImageToSourceConverter}}" />
+                                         <Image  VerticalOptions="Center" HeightRequest="50" HorizontalOptions="Center" Source="{Binding ., Converter={StaticResource ImageToSourceConverter}}" />
                                     </mr:StackLayout>
                                     <Label Grid.Column="1"
                                             VerticalOptions="Center"

@@ -24,6 +24,7 @@ namespace LocalDatabase.Mobile.Views
             InitializeComponent();
 
             viewModel = _viewModel;
+            
 
             BindingContext = viewModel;
         }

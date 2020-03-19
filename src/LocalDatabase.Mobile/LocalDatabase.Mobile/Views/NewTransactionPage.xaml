@@ -16,10 +16,10 @@
     </ContentPage.Resources>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Cancel" Clicked="Cancel_Clicked" />
-        <ToolbarItem Text="Save" Clicked="Save_Clicked" />
+        <ToolbarItem Text="Save" Clicked="Save_Clicked" Order="Primary" Priority="0"/>
+
     </ContentPage.ToolbarItems>
-    
+
     <ContentPage.Content>
         <StackLayout Spacing="10" Padding="15" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
             <Grid HorizontalOptions="FillAndExpand">
@@ -36,7 +36,13 @@
                     <Button Text="Take Photo" Command="{Binding TakePhotoCommand}"/>
                 </StackLayout>
 
-                <StackLayout Grid.Column="1" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="Fill" Spacing="0" Padding="0" Orientation="Vertical" >
+                <StackLayout Grid.Column="1" 
+                             Grid.Row="0" 
+                             HorizontalOptions="FillAndExpand" 
+                             VerticalOptions="Fill" 
+                             Spacing="-3" 
+                             Padding="0" 
+                             Orientation="Vertical" >
                     <Label Text="Amount" FontSize="14" />
                     <Editor x:Name="amountEntry" Text="{Binding Item.Amount}" FontSize="12" Margin="0" />
                     <mr:StackLayout Orientation="Vertical" 
@@ -54,7 +60,7 @@
                         <Editor x:Name="categoryEntry" IsReadOnly="True" Text="{Binding Item.Category}" FontSize="12" Margin="0" />
                     </mr:StackLayout>
                 </StackLayout>
-                <StackLayout Orientation="Vertical" Grid.Row="1" Grid.ColumnSpan="2">
+                <StackLayout Orientation="Vertical" Grid.Row="1" Grid.ColumnSpan="2" Spacing="-3">
                     <mr:StackLayout Orientation="Vertical" 
                                     VerticalOptions="Fill"
                                     HorizontalOptions="FillAndExpand"
@@ -68,6 +74,7 @@
                     </StackLayout>
                     <Entry Text="{Binding Item.Description}" FontSize="12" />
                 </StackLayout>
+                <!--Transaction Date-->
                 <mr:StackLayout Grid.Row="2"
                                 Grid.ColumnSpan="2"
                                 Orientation="Vertical" 
