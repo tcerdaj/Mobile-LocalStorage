@@ -58,7 +58,7 @@ namespace LocalDatabase.Mobile.ViewModels
                 DateTime endDate = startDate.AddMonths(1).AddDays(-1);
 
                 var tranByDayEntries = Transactions
-                    .Where(x => x.Created >= startDate && x.Created <= endDate)
+                    .Where(x => x.Created >= startDate && x.Created <= endDate && x.TransactionType == TransactionType.Expense)
                     .GroupBy(d => d.Created.Day)
                     .OrderBy(x=>x.Key)
                     .Select(x => new Entry(x.Sum(s => (float)s.Amount))
@@ -75,7 +75,7 @@ namespace LocalDatabase.Mobile.ViewModels
                 endDate = new DateTime(DateTime.Now.Year, 12, 31);
 
                 var tranByMonthEntries = Transactions
-                    .Where(x => x.Created >= startDate && x.Created <= endDate)
+                    .Where(x => x.Created >= startDate && x.Created <= endDate && x.TransactionType == TransactionType.Expense)
                     .GroupBy(d => d.Created.ToString("MMMM"))
                     .OrderBy(x=>x.First().Created.Month)
                     .Select(x => new Entry(x.Sum(s => (float)s.Amount))
@@ -89,7 +89,7 @@ namespace LocalDatabase.Mobile.ViewModels
                 ExpensesByMonth = new LineChart() { Entries = tranByMonthEntries, LabelTextSize = 20f, LineSize = 8};
 
                 var tranByCategoryEntries = Transactions
-                    .Where(x => x.Created >= startDate && x.Created <= endDate)
+                    .Where(x => x.Created >= startDate && x.Created <= endDate && x.TransactionType == TransactionType.Expense)
                     .GroupBy(d => d.Category)
                     .Select(x => new Entry(x.Sum(s => (float)s.Amount))
                     {
